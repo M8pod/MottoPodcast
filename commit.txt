@@ -1,0 +1,68 @@
+feat: schema colori, sezione Episodi e sezione Articoli
+
+- Schema colori applicato a tutta l'app: sfondo nero carbone,
+  verde menta per titoli/etichette/navigazione, rosa pastello per
+  il testo di contenuto (descrizioni, estratti). Contrasto verificato
+  (verde 12.17:1, rosa 9.88:1 su sfondo — ben oltre il minimo WCAG AA).
+
+- Nuova vista "Episodi": selettore stagione (nativo <select>, il più
+  accessibile con VoiceOver) + elenco puntate della stagione scelta.
+  Cliccando una puntata si torna alla home e parte la riproduzione.
+  Scartate dal selettore due stagioni con dati errati alla fonte nel
+  feed di Anchor (episodi vecchi con itunes:season "133" e "246").
+
+- Nuova vista "Articoli": ultimi 10 articoli di mottopodcast.org via
+  API REST pubbliche di WordPress (carica-articoli.js), con titolo,
+  data ed estratto pulito. Il titolo apre l'articolo completo sul
+  sito in una nuova scheda (scelto invece di un embedding completo:
+  il contenuto Gutenberg del sito include markup e link di navigazione
+  che risulterebbero fuori contesto e confusi dentro l'app).
+
+- Navigazione a 3 viste (Player / Episodi / Articoli) con spostamento
+  del focus sul titolo della vista ad ogni cambio, per orientare chi
+  usa uno screen reader.
+
+- Fix di accessibilità: il link di ogni articolo ora ha un nome breve
+  e chiaro ("Titolo, si apre in una nuova scheda") invece di includere
+  anche data ed estratto nel nome del link (che li avrebbe resi tutti
+  un'unica, lunghissima frase da ascoltare per VoiceOver).
+
+- Aggiunto spazio/trattino mancante fra numero puntata e titolo negli
+  elenchi episodi ("Puntata 258 – Titolo" invece di "Puntata 258Titolo").
+
+Nota: la riproduzione audio effettiva e i click reali sui pulsanti di
+navigazione non sono verificabili nell'ambiente di test automatizzato
+usato in questa sessione (limite dello strumento, non del codice) — da
+testare direttamente sul dispositivo.
+
+feat: quarta vista "Contatti" (Scrivici / Seguici / Sostienici)
+
+- Email, link al sito, link social e link piattaforme di ascolto
+  recuperati direttamente dalla pagina "Contatti" del sito
+  mottopodcast.org tramite il connettore WordPress.com.
+- "Scrivici": invito a contattare via email (mottopod@gmail.com).
+- "Seguici": link al sito, a Instagram/Facebook/YouTube/WhatsApp/
+  Threads di Motto Podcast, e alle piattaforme di ascolto (Spotify,
+  Apple Podcasts, Amazon Music, Audible, Amazon).
+- "Sostienici": invito alla donazione con link PayPal
+  (paypal.me/MottoPodcast).
+- Testi rivisti per grammatica e forma rispetto alle bozze fornite.
+- Bug trovato e corretto durante il test: il pulsante di donazione
+  era invisibile (testo verde su sfondo verde) per un conflitto di
+  specificità CSS fra due regole di colore sullo stesso link.
+
+fix: rimossi da "Seguici" i link alle piattaforme di ascolto
+(Spotify, Apple Podcasts, Amazon Music, Audible, Amazon) — restano
+solo i 5 canali social (Instagram, Facebook, YouTube, WhatsApp,
+Threads).
+
+feat: icona dell'app basata sul logo di Motto Podcast
+
+- Recuperato il logo originale dal favicon del sito mottopodcast.org
+  (anello circolare + "MOTTO" + "もっと" + "PODCAST" in stile
+  metallico/inciso su sfondo nero).
+- Ricolorato mantenendo la sfumatura metallica originale: anello e
+  "MOTTO" in verde menta, "もっと" e "PODCAST" in rosa pastello —
+  gli stessi colori esatti dello schema dell'app.
+- Generate le dimensioni standard (16, 32, 180, 512, 1024px) in
+  assets/, collegate in index.html come favicon e apple-touch-icon.

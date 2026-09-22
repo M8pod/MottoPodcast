@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motto Podcast</title>
+<link rel="icon" href="assets/icona-32.png" sizes="32x32">
+<link rel="icon" href="assets/icona-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="assets/icona-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Motto Podcast</h1>
+</header>
+
+<main>
+
+  <!-- VISTA: Home / Player -->
+  <section id="vista-home" class="vista" aria-labelledby="titolo-vista-home">
+    <h2 id="titolo-vista-home" class="sr-only" tabindex="-1">Player</h2>
+
+    <section class="player" aria-label="Riproduttore puntata">
+
+      <audio id="audio-puntata" preload="metadata"></audio>
+
+      <div class="controlli-player">
+        <button type="button" id="btn-indietro" aria-label="Indietro di 15 secondi">
+          <img src="assets/pulsanti/indietro.png" alt="" aria-hidden="true">
+        </button>
+
+        <button type="button" id="btn-play-pausa" aria-label="Riproduci">
+          <img id="icona-play-pausa" src="assets/pulsanti/play.png" alt="" aria-hidden="true">
+        </button>
+
+        <button type="button" id="btn-avanti" aria-label="Avanti di 15 secondi">
+          <img src="assets/pulsanti/avanti.png" alt="" aria-hidden="true">
+        </button>
+      </div>
+
+      <p id="stato-player" class="sr-only" role="status" aria-live="polite"></p>
+
+    </section>
+
+    <section class="info-puntata" aria-label="Informazioni puntata" aria-live="polite">
+      <h2 id="titolo-puntata">Caricamento puntata…</h2>
+      <p id="meta-puntata" class="etichetta"></p>
+      <div id="descrizione-puntata"></div>
+    </section>
+  </section>
+
+  <!-- VISTA: Episodi -->
+  <section id="vista-episodi" class="vista" aria-labelledby="titolo-vista-episodi" hidden>
+    <h2 id="titolo-vista-episodi" tabindex="-1">Episodi</h2>
+
+    <div class="selettore-stagione">
+      <label for="seleziona-stagione" class="etichetta">Stagione</label>
+      <select id="seleziona-stagione"></select>
+    </div>
+
+    <ul id="elenco-puntate" class="elenco-puntate" aria-label="Puntate della stagione selezionata"></ul>
+  </section>
+
+  <!-- VISTA: Articoli -->
+  <section id="vista-articoli" class="vista" aria-labelledby="titolo-vista-articoli" hidden>
+    <h2 id="titolo-vista-articoli" tabindex="-1">Articoli</h2>
+    <p id="stato-articoli" class="etichetta"></p>
+    <ul id="elenco-articoli" class="elenco-articoli" aria-label="Ultimi articoli del sito"></ul>
+  </section>
+
+  <!-- VISTA: Contatti -->
+  <section id="vista-contatti" class="vista" aria-labelledby="titolo-vista-contatti" hidden>
+    <h2 id="titolo-vista-contatti" tabindex="-1">Contatti</h2>
+
+    <section class="blocco-contatti" aria-labelledby="titolo-scrivici">
+      <h3 id="titolo-scrivici">Scrivici</h3>
+      <p>Ti piace Motto Podcast? Se vuoi segnalarci una notizia interessante o hai una storia da raccontare, scrivici a:</p>
+      <p><a href="mailto:mottopod@gmail.com">mottopod@gmail.com</a></p>
+    </section>
+
+    <section class="blocco-contatti" aria-labelledby="titolo-seguici">
+      <h3 id="titolo-seguici">Seguici</h3>
+      <p>Non dimenticare di aggiungere ai segnalibri il nostro sito:</p>
+      <p><a href="https://mottopodcast.org" target="_blank" rel="noopener">mottopodcast.org</a></p>
+
+      <p>E se vuoi seguirci nei nostri viaggi o scoprire cosa facciamo oltre al podcasting, seguici anche sui social:</p>
+      <ul class="elenco-link">
+        <li><a href="https://instagram.com/mottopodcast" target="_blank" rel="noopener">Instagram di Motto Podcast</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=100063534550582" target="_blank" rel="noopener">Facebook di Motto Podcast</a></li>
+        <li><a href="https://youtube.com/@mottopodcast" target="_blank" rel="noopener">Canale YouTube di Motto Podcast</a></li>
+        <li><a href="https://whatsapp.com/channel/0029VbCNl3FCHDyfE5pQeA2T" target="_blank" rel="noopener">Canale WhatsApp di Motto Podcast</a></li>
+        <li><a href="https://www.threads.com/@mottopodcast?invite=0" target="_blank" rel="noopener">Threads di Motto Podcast</a></li>
+      </ul>
+    </section>
+
+    <section class="blocco-contatti" aria-labelledby="titolo-sostienici">
+      <h3 id="titolo-sostienici">Sostienici</h3>
+      <p>Per registrare le puntate e realizzare i nostri reportage in giro per il mondo abbiamo bisogno di attrezzature, abbonamenti e biglietti di viaggio. Se il nostro progetto ti piace e vuoi sostenerci, fai una donazione con PayPal:</p>
+      <p><a href="https://www.paypal.me/MottoPodcast" target="_blank" rel="noopener" class="link-donazione">Fai una donazione con PayPal</a></p>
+    </section>
+  </section>
+
+</main>
+
+<nav class="navigazione-sezioni" aria-label="Sezioni dell'app">
+  <button type="button" data-vista="vista-home" aria-current="true">Player</button>
+  <button type="button" data-vista="vista-episodi" aria-current="false">Episodi</button>
+  <button type="button" data-vista="vista-articoli" aria-current="false">Articoli</button>
+  <button type="button" data-vista="vista-contatti" aria-current="false">Contatti</button>
+</nav>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
