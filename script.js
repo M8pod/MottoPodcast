@@ -12,6 +12,10 @@ const statoPlayer = document.getElementById('stato-player');
 const titoloPuntata = document.getElementById('titolo-puntata');
 const metaPuntata = document.getElementById('meta-puntata');
 const descrizionePuntata = document.getElementById('descrizione-puntata');
+const barraAvanzamento = document.getElementById('barra-avanzamento');
+const tempoTrascorso = document.getElementById('tempo-trascorso');
+const tempoTotale = document.getElementById('tempo-totale');
+const btnCondividi = document.getElementById('btn-condividi');
 
 const selettoreStagione = document.getElementById('seleziona-stagione');
 const elencoPuntateEl = document.getElementById('elenco-puntate');
@@ -22,6 +26,7 @@ const elencoArticoliEl = document.getElementById('elenco-articoli');
 const pulsantiNavigazione = document.querySelectorAll('.navigazione-sezioni button');
 
 let tutteLePuntate = [];
+let puntataCorrente = null;
 
 // ---------- Navigazione fra viste ----------
 
@@ -60,6 +65,10 @@ function formattaData(dataIso) {
 }
 
 function mostraPuntata(puntata, avviaRiproduzione = false) {
+  puntataCorrente = puntata;
+  btnCondividi.hidden = !puntata.link;
+  azzeraAvanzamento();
+
   titoloPuntata.textContent = puntata.titolo || 'Puntata senza titolo';
 
   const parti = [];
@@ -105,6 +114,107 @@ btnAvanti.addEventListener('click', () => {
   const nuovoTempo = audio.currentTime + SECONDI_SALTO;
   audio.currentTime = Math.min(nuovoTempo, audio.duration || nuovoTempo);
   statoPlayer.textContent = `Avanti di ${SECONDI_SALTO} secondi`;
+});
+
+// ---------- Barra di avanzamento ----------
+
+// Formato compatto per la parte visibile: "1:05:09" oppure "12:30"
+function formattaTempoBreve(secondi) {
+  const s = Math.floor(secondi || 0);
+  const ore = Math.floor(s / 3600);
+  const minuti = Math.floor((s % 3600) / 60);
+  const resto = String(s % 60).padStart(2, '0');
+  return ore > 0 ? `${ore}:${String(minuti).padStart(2, '0')}:${resto}` : `${minuti}:${resto}`;
+}
+
+// Formato a parole per VoiceOver: "12 minuti e 30 secondi"
+function formattaTempoParlato(secondi) {
+  const s = Math.floor(secondi || 0);
+  const ore = Math.floor(s / 3600);
+  const minuti = Math.floor((s % 3600) / 60);
+  const resto = s % 60;
+  const parti = [];
+  if (ore) parti.push(ore === 1 ? '1 ora' : `${ore} ore`);
+  if (minuti) parti.push(minuti === 1 ? '1 minuto' : `${minuti} minuti`);
+  if (resto || parti.length === 0) parti.push(resto === 1 ? '1 secondo' : `${resto} secondi`);
+  return parti.join(' e ');
+}
+
+// Mentre l'utente sta spostando la barra non la aggiorniamo dal player,
+// altrimenti il cursore "scappa" sotto il dito.
+let trascinamentoInCorso = false;
+
+function aggiornaAvanzamento(secondi) {
+  barraAvanzamento.value = secondi;
+  tempoTrascorso.textContent = formattaTempoBreve(secondi);
+  barraAvanzamento.setAttribute(
+    'aria-valuetext',
+    `${formattaTempoParlato(secondi)} su ${formattaTempoParlato(audio.duration)}`
+  );
+}
+
+function azzeraAvanzamento() {
+  barraAvanzamento.disabled = true;
+  barraAvanzamento.max = 0;
+  tempoTotale.textContent = '0:00';
+  aggiornaAvanzamento(0);
+}
+
+audio.addEventListener('loadedmetadata', () => {
+  barraAvanzamento.max = Math.floor(audio.duration);
+  barraAvanzamento.disabled = false;
+  tempoTotale.textContent = formattaTempoBreve(audio.duration);
+  aggiornaAvanzamento(audio.currentTime);
+});
+
+audio.addEventListener('timeupdate', () => {
+  if (!trascinamentoInCorso) {
+    aggiornaAvanzamento(audio.currentTime);
+  }
+});
+
+// "input" arriva durante il trascinamento (e a ogni gesto di VoiceOver),
+// "change" quando l'utente rilascia: solo allora spostiamo l'audio.
+barraAvanzamento.addEventListener('input', () => {
+  trascinamentoInCorso = true;
+  aggiornaAvanzamento(Number(barraAvanzamento.value));
+});
+
+barraAvanzamento.addEventListener('change', () => {
+  audio.currentTime = Number(barraAvanzamento.value);
+  trascinamentoInCorso = false;
+});
+
+// ---------- Condivisione ----------
+
+btnCondividi.addEventListener('click', async () => {
+  if (!puntataCorrente?.link) return;
+  const titolo = puntataCorrente.titolo || 'Motto Podcast';
+  const dati = {
+    title: titolo,
+    text: `Ascolta "${titolo}" di Motto Podcast`,
+    url: puntataCorrente.link
+  };
+
+  // Su iPhone apre il foglio di condivisione di sistema (Messaggi,
+  // WhatsApp, Mail, Copia...). Dove non esiste, copia il link negli appunti.
+  if (navigator.share) {
+    try {
+      await navigator.share(dati);
+    } catch (errore) {
+      if (errore.name !== 'AbortError') {
+        statoPlayer.textContent = 'Condivisione non riuscita';
+      }
+    }
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(dati.url);
+    statoPlayer.textContent = 'Link della puntata copiato negli appunti';
+  } catch {
+    statoPlayer.textContent = 'Impossibile copiare il link della puntata';
+  }
 });
 
 audio.addEventListener('play', aggiornaPulsantePlayPausa);

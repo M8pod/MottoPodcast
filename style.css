@@ -231,13 +231,74 @@ select:focus-visible {
   color: var(--colore-titoli);
 }
 
-.elenco-link {
+.elenco-social {
   list-style: none;
   margin: 0 0 1rem;
   padding: 0;
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Area di tocco di 48px anche se l'icona e' piu' piccola */
+.elenco-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  color: var(--colore-titoli);
+}
+
+.elenco-social svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+.avanzamento {
+  width: 100%;
+}
+
+#barra-avanzamento {
+  width: 100%;
+  accent-color: var(--colore-titoli);
+}
+
+.tempi {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--colore-titoli);
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-condividi {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--colore-titoli);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: var(--colore-titoli);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-condividi[hidden] {
+  display: none;
+}
+
+.btn-condividi svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .blocco-contatti a.link-donazione {
