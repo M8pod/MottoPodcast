@@ -1,9 +1,9 @@
 :root {
   --colore-sfondo: #101012;
-  /* verde menta: titoli e testo strutturale (intestazioni, etichette, navigazione) */
-  --colore-titoli: #5be7a9;
-  /* rosa pastello: testo di contenuto (descrizioni, paragrafi, estratti articoli) */
-  --colore-testo: #f4a4c0;
+  /* verde salvia tenue: titoli e testo strutturale (intestazioni, etichette, navigazione) */
+  --colore-titoli: #9fd4bc;
+  /* rosa cipria tenue: testo di contenuto (descrizioni, paragrafi, estratti articoli) */
+  --colore-testo: #e6c3cf;
 }
 
 * {
@@ -166,7 +166,7 @@ select:focus-visible {
   width: 100%;
   text-align: left;
   background: #1c1c1f;
-  border: 1px solid rgba(91, 231, 169, 0.3);
+  border: 1px solid rgba(159, 212, 188, 0.3);
   border-radius: 8px;
   padding: 0.75rem;
   color: var(--colore-testo);
